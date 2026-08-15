@@ -34,11 +34,11 @@ What this repo *does* contain:
 |------|---------|
 | `plugins/` | Official example plugins; see `plugins/README.md` for the full table of what each one provides (commands/agents/skills/hooks) and the standard plugin structure (`.claude-plugin/plugin.json`, `commands/`, `agents/`, `skills/`, `hooks/`, `.mcp.json`). |
 | `.claude-plugin/marketplace.json` | Marketplace manifest listing the plugins in `plugins/` for `/plugin` installation. |
-| `scripts/` | Bun/TypeScript + shell scripts backing this repo's issue bots: `issue-lifecycle.ts`, `sweep.ts`, `auto-close-duplicates.ts`, `backfill-duplicate-comments.ts`, `comment-on-duplicates.sh`, `edit-issue-labels.sh`, `gh.sh` (a `gh` wrapper). |
+| `scripts/` | Bun/TypeScript + shell scripts backing this repo's issue bots: `issue-lifecycle.ts` (shared data — the single source of truth for lifecycle labels/timeouts/nudge messages, imported by the others, no shebang of its own), `lifecycle-comment.ts` (posts the nudge comment when a lifecycle label is applied), `sweep.ts`, `auto-close-duplicates.ts`, `backfill-duplicate-comments.ts`, `comment-on-duplicates.sh`, `edit-issue-labels.sh`, `gh.sh` (a `gh` wrapper). |
 | `examples/hooks/` | Sample hook script (`bash_command_validator_example.py`) demonstrating the hooks API. |
 | `examples/settings/` | Sample `settings.json` permission profiles (`settings-strict.json`, `settings-lax.json`, `settings-bash-sandbox.json`) with a `README.md` explaining trade-offs. |
 | `examples/mdm/` | Enterprise MDM policy templates for macOS (`.plist`/`.mobileconfig`) and Windows (`.admx`, PowerShell). |
-| `.github/workflows/` | `claude.yml` (the `@claude` mention responder), `claude-issue-triage.yml`, `claude-dedupe-issues.yml`, plus lifecycle/dedupe/lock automation that call into `scripts/`. |
+| `.github/workflows/` | 12 workflows total. Issue-comment bot: `claude.yml` (the `@claude` mention responder). Claude-driven triage/dedupe: `claude-issue-triage.yml`, `claude-dedupe-issues.yml`. Scripted lifecycle/dedupe/lock automation (calling into `scripts/`): `sweep.yml`, `issue-lifecycle-comment.yml`, `remove-autoclose-label.yml`, `auto-close-duplicates.yml`, `backfill-duplicate-comments.yml`, `lock-closed-issues.yml`. Misc: `issue-opened-dispatch.yml`, `log-issue-events.yml` (Statsig), `non-write-users-check.yml`. |
 | `.devcontainer/` | Dockerfile + devcontainer config + firewall init script for a sandboxed dev container. |
 | `Script/run_devcontainer_claude_code.ps1` | PowerShell helper to launch the devcontainer on Windows. |
 
